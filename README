@@ -1,0 +1,9 @@
+npm install @reduxjs/toolkit react-redux
+npm install react-router-dom
+npm install @mui/material @emotion/react @emotion/styled @mui/icons-material
+npm install react-beautiful-dnd
+npm install firebase
+npm install --save-dev @types/react-beautiful-dnd
+
+npx create-react-app task-management-system --template typescript
+cd task-management-system
