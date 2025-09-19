@@ -43,8 +43,8 @@ function App() {
               element={
                 user ? (
                   <>
-                    <PostForm />
                     <PostList />
+                    <PostForm />
                   </>
                 ) : (
                   <LoginForm />
