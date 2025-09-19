@@ -13,46 +13,46 @@ function App() {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        Загрузка...
-      </div>
-    );
+    return <div className="App">Загрузка...</div>;
   }
 
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50">
-        <Header />
-        <main className="max-w-4xl mx-auto py-8 px-4">
-          <Routes>
-            <Route
-              path="/login"
-              element={!user ? <LoginForm /> : <PostList />}
-            />
-            <Route
-              path="/register"
-              element={!user ? <RegisterForm /> : <PostList />}
-            />
-            <Route
-              path="/profile"
-              element={user ? <Profile /> : <LoginForm />}
-            />
-            <Route
-              path="/"
-              element={
-                user ? (
-                  <>
-                    <PostList />
-                    <PostForm />
-                  </>
-                ) : (
-                  <LoginForm />
-                )
-              }
-            />
-          </Routes>
-        </main>
+      <div className="App">
+        <div className="main-container">
+          <Header />
+          <main className="main-content">
+            <div className="container">
+              <Routes>
+                <Route
+                  path="/login"
+                  element={!user ? <LoginForm /> : <PostList />}
+                />
+                <Route
+                  path="/register"
+                  element={!user ? <RegisterForm /> : <PostList />}
+                />
+                <Route
+                  path="/profile"
+                  element={user ? <Profile /> : <LoginForm />}
+                />
+                <Route
+                  path="/"
+                  element={
+                    user ? (
+                      <div className="fade-in">
+                        <PostList />
+                        <PostForm />
+                      </div>
+                    ) : (
+                      <LoginForm />
+                    )
+                  }
+                />
+              </Routes>
+            </div>
+          </main>
+        </div>
       </div>
     </Router>
   );
