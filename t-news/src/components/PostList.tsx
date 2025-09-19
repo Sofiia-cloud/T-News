@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { Post as PostType } from '../types';
+import styles from '../modules/PostList.module.css';
 
 export const PostList: React.FC = () => {
   const [posts, setPosts] = useState<PostType[]>([]);
@@ -36,65 +37,65 @@ export const PostList: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <div className="loading">Загрузка постов...</div>;
+    return <div className={styles.loading}>Загрузка постов...</div>;
   }
 
   return (
-    <div className="posts-container">
+    <div className={styles.posts}>
       <h2>Лента новостей</h2>
 
       {posts.length === 0 ? (
-        <div className="empty-state">
+        <div className={styles.empty}>
           <p>Пока нет публикаций. Будьте первым!</p>
         </div>
       ) : (
-        <div className="posts-list">
+        <div className={styles.list}>
           {posts.map((post) => (
-            <div key={post.id} className="publication">
-              <div className="publication-content">
-                <div className="publication-header">
+            <div key={post.id} className={styles.publication}>
+              <div className={styles.content}>
+                <div className={styles.header}>
                   <img
                     src={post.userAvatar || '/img/image.svg'}
                     alt={post.userName}
-                    className="publication-person-image"
+                    className={styles.personImg}
                   />
-                  <div className="user-info">
-                    <p className="name">{post.userName}</p>
-                    <span className="time">
+                  <div className={styles.info}>
+                    <p className={styles.name}>{post.userName}</p>
+                    <span className={styles.time}>
                       {post.createdAt?.toLocaleDateString()}
                     </span>
                   </div>
                 </div>
 
-                <div className="publication-body">
-                  <p className="publication-text">{post.text}</p>
+                <div className={styles.body}>
+                  <p className={styles.text}>{post.text}</p>
                   {post.imageUrl && (
                     <img
                       src={post.imageUrl}
                       alt="Post"
-                      className="post-image"
+                      className={styles.postImg}
                     />
                   )}
                 </div>
 
-                <div className="publication-footer">
-                  <button className="likes-button">
+                <div className={styles.footer}>
+                  <button className={styles.likeBtn}>
                     <img
                       src="/img/svg-heart.svg"
                       alt="Лайк"
-                      className="like-img"
+                      className={styles.likeImg}
                     />
-                    <span className="likes-count">{post.likesCount}</span>
+                    <span className={styles.likes}>{post.likesCount}</span>
                   </button>
 
-                  <button className="grey-button">
+                  <button className={styles.greyBtn}>
                     Комментарии
-                    <span className="comments-count">
+                    <span className={styles.commentCount}>
                       {post.comments?.length || 0}
                     </span>
                   </button>
 
-                  <button className="grey-button">Поделиться</button>
+                  <button className={styles.greyBtn}>Поделиться</button>
                 </div>
               </div>
             </div>
