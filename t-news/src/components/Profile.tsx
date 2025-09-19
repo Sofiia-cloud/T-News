@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { PostForm } from './PostForm';
 import styles from '../modules/Profile.module.css';
+import profile from '../assets/image.svg';
+import edit from '../assets/edit.svg';
+import like from '../assets/svg-heart.svg';
 
 export const Profile: React.FC = () => {
   const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
-  const [bio, setBio] = useState(
-    'Обо мне: римский философ, поэт и государственный деятель.'
-  );
+  const [bio, setBio] = useState('Обо мне: ...');
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Логика загрузки изображения
@@ -24,11 +25,7 @@ export const Profile: React.FC = () => {
     <div className={styles.profile_container}>
       <section className={styles.person_info}>
         <div className={styles.profile_image}>
-          <img
-            id="profile-image"
-            src="/img/image.svg"
-            alt="Изображение профиля"
-          />
+          <img id="profile-image" src={profile} alt="Изображение профиля" />
           <label className={styles.change_image}>
             <input
               type="file"
@@ -47,7 +44,7 @@ export const Profile: React.FC = () => {
               className={styles.change_bio}
               onClick={() => setIsEditing(!isEditing)}
             >
-              <img src="/img/edit.svg" alt="Редактировать" />
+              <img src={edit} alt="Редактировать" />
             </button>
           </div>
 
@@ -67,7 +64,7 @@ export const Profile: React.FC = () => {
               className={styles.change_bio}
               onClick={() => setIsEditing(!isEditing)}
             >
-              <img src="/img/edit.svg" alt="Редактировать" />
+              <img src={edit} alt="Редактировать" />
             </button>
           </div>
         </div>
@@ -86,7 +83,7 @@ export const Profile: React.FC = () => {
             <div className={styles.publication_header}>
               <img
                 alt="person icon"
-                src="/img/image.svg"
+                src={profile}
                 className={styles.publication_person_image}
               />
               <p className={styles.name}>{user?.displayName || user?.email}</p>
@@ -99,11 +96,7 @@ export const Profile: React.FC = () => {
             </div>
             <div className={styles.publication_footer}>
               <button className={styles.likes_button}>
-                <img
-                  className={styles.like_img}
-                  alt="heart"
-                  src="/img/svg-heart.svg"
-                />
+                <img className={styles.like_img} alt="heart" src={like} />
                 <span className={styles.likes_count}>21</span>
               </button>
               <button className={styles.grey_button}>
