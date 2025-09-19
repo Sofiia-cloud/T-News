@@ -3,6 +3,7 @@ import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '../services/firebase';
 import { useAuth } from '../hooks/useAuth';
+import styles from '../modules/PostForm.module.css';
 
 export const PostForm: React.FC = () => {
   const [text, setText] = useState('');
@@ -44,36 +45,39 @@ export const PostForm: React.FC = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-8"
-    >
-      <h2 className="text-xl font-semibold mb-4">Создать публикацию</h2>
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <h2 className={styles.title}>Создать публикацию</h2>
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Что у вас нового?"
         rows={3}
-        className="w-full p-4 border border-gray-200 rounded-xl resize-vertical text-gray-700 mb-4 focus:border-blue-500 focus:outline-none"
+        className={styles.textarea}
       />
-      <div className="flex justify-between items-center">
-        <label className="cursor-pointer text-blue-600 font-medium">
+      <div className={styles.actions}>
+        <label className={styles.fileLabel}>
           <input
             type="file"
             accept="image/*"
             onChange={(e) => setImage(e.target.files?.[0] || null)}
-            className="hidden"
+            className={styles.fileInput}
           />
           Добавить изображение
         </label>
         <button
           type="submit"
           disabled={loading}
-          className="bg-yellow-400 text-gray-900 px-6 py-2 rounded-lg font-medium hover:bg-yellow-500 disabled:opacity-50"
+          className={styles.submitButton}
         >
           {loading ? 'Публикация...' : 'Опубликовать'}
         </button>
       </div>
+
+      {image && (
+        <div className={styles.imagePreview}>
+          <p>Изображение для загрузки: {image.name}</p>
+        </div>
+      )}
     </form>
   );
 };
