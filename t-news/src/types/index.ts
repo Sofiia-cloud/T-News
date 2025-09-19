@@ -1,7 +1,9 @@
 export interface User {
   uid: string;
   email: string | null;
-  displayName?: string | null;
+  displayName?: string;
+  photoURL?: string;
+  bio?: string;
 }
 
 export interface Post {
@@ -9,9 +11,12 @@ export interface Post {
   text: string;
   userId: string;
   userEmail: string;
+  userName: string;
+  userAvatar?: string;
   imageUrl?: string;
   createdAt: Date;
-  likes: number;
+  likes: string[];
+  likesCount: number;
   comments: Comment[];
 }
 
@@ -20,5 +25,13 @@ export interface Comment {
   text: string;
   userId: string;
   userEmail: string;
+  userName: string;
+  userAvatar?: string;
   createdAt: Date;
+}
+
+export interface AuthCredentials {
+  email: string;
+  password: string;
+  displayName?: string;
 }

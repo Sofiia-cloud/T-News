@@ -1,0 +1,136 @@
+.navigation {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  color: #1a1a1a;
+  padding: 16px 14%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex: 1;
+}
+
+.logoImage {
+  height: 32px;
+  width: auto;
+}
+
+.searchForm {
+  flex: 1;
+  max-width: 400px;
+}
+
+.searchText {
+  color: #777777;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 320px;
+  height: 40px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #f6f7f8;
+  background-color: #f6f7f8;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.searchText:focus {
+  outline: none;
+  border: 1px solid #c1c1c1;
+  background-color: #ffffff;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: #777777;
+}
+
+.userEmail {
+  font-weight: 500;
+  color: #1a1a1a;
+  margin-right: 8px;
+}
+
+.profileBtn,
+.exitBtn,
+.authBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.profileBtn:hover,
+.exitBtn:hover,
+.authBtn:hover {
+  background-color: #f6f7f8;
+}
+
+.exitBtn {
+  color: #ff4757;
+}
+
+.exitBtn:hover {
+  background-color: #ffeaea;
+}
+
+.authBtn {
+  color: #126df7;
+}
+
+.authBtn:hover {
+  background-color: #e6f0ff;
+}
+
+.profileIcon,
+.exitIcon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.profileBtn:hover .profileIcon,
+.exitBtn:hover .exitIcon {
+  opacity: 1;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .navigation {
+    padding: 16px 5%;
+  }
+
+  .logo {
+    gap: 16px;
+  }
+
+  .searchText {
+    min-width: 200px;
+  }
+
+  .menu {
+    gap: 8px;
+  }
+
+  .userEmail {
+    display: none;
+  }
+}
