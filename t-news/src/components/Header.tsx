@@ -28,9 +28,13 @@ export const Header: React.FC = () => {
   return (
     <nav className={styles.navigation}>
       <div className={styles.logo}>
-        <span className={styles.icon}>
-          <img src={logo} alt="T-News Logo" className={styles.logoImage} />
-        </span>
+        <button
+          className={styles.profileBtn}
+          onClick={() => navigate('/')}
+          title="Главная"
+        >
+          <img src={logo} alt="Главная" className={styles.logoImage} />
+        </button>
         <form onSubmit={handleSearch} className={styles.searchForm}>
           <input
             type="text"
@@ -53,6 +57,7 @@ export const Header: React.FC = () => {
             >
               <img src={profile} alt="Профиль" className={styles.profileIcon} />
             </button>
+
             <button
               className={styles.exitBtn}
               onClick={handleLogout}
