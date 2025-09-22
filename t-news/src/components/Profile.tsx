@@ -25,7 +25,11 @@ export const Profile: React.FC = () => {
     <div className={styles.profile_container}>
       <section className={styles.person_info}>
         <div className={styles.profile_image}>
-          <img id="profile-image" src={profile} alt="Изображение профиля" />
+          <img
+            id={styles.profile_image}
+            src={profile}
+            alt="Изображение профиля"
+          />
           <label className={styles.change_image}>
             <input
               type="file"
@@ -40,12 +44,6 @@ export const Profile: React.FC = () => {
         <div className={styles.profile_header}>
           <div className={styles.profile_info_header}>
             <h1>{user?.displayName || user?.email || 'Пользователь'}</h1>
-            <button
-              className={styles.change_bio}
-              onClick={() => setIsEditing(!isEditing)}
-            >
-              <img src={edit} alt="Редактировать" />
-            </button>
           </div>
 
           <div className={styles.profile_info_body}>
@@ -89,10 +87,7 @@ export const Profile: React.FC = () => {
               <p className={styles.name}>{user?.displayName || user?.email}</p>
             </div>
             <div className={styles.publication_body}>
-              <p className={styles.publication_text}>
-                «Мустанг» был заперт; он словно припал на широкие колеса, будто
-                спал. Автомобиль Клэрис забавлял доктора Лектера...
-              </p>
+              <p className={styles.publication_text}>Ваш пост...</p>
             </div>
             <div className={styles.publication_footer}>
               <button className={styles.likes_button}>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate, Link } from 'react-router-dom';
+import { FirebaseError } from 'firebase/app';
 import styles from '../modules/Login.module.css';
 
 export const LoginForm: React.FC = () => {
@@ -12,6 +13,19 @@ export const LoginForm: React.FC = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  const getErrorMessage = (error: FirebaseError): string => {
+    switch (error.code) {
+      case 'auth/invalid-credential':
+        return 'Неверный пароль';
+      case 'auth/unauthorized-domain':
+        return 'Вы неавторизованы';
+      case 'auth/network-request-failed':
+        return 'Ошибка сети. Проверьте подключение к интернету';
+      default:
+        return 'Произошла неизвестная ошибка. Попробуйте еще раз';
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -21,7 +35,11 @@ export const LoginForm: React.FC = () => {
       await login(email, password);
       navigate('/');
     } catch (err: any) {
-      setError(err.message || 'Ошибка при входе');
+      if (err instanceof FirebaseError) {
+        setError(getErrorMessage(err));
+      } else {
+        setError('Ошибка при входе');
+      }
     } finally {
       setLoading(false);
     }

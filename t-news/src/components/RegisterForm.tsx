@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate, Link } from 'react-router-dom';
 import styles from '../modules/Register.module.css';
+import { FirebaseError } from 'firebase/app';
 
 export const RegisterForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -16,11 +17,33 @@ export const RegisterForm: React.FC = () => {
   const { register } = useAuth();
   const navigate = useNavigate();
 
+  const getErrorMessage = (error: FirebaseError): string => {
+    switch (error.code) {
+      case 'auth/email-already-in-use':
+        return 'Эта почта уже используется. Попробуйте войти или использовать другую почту';
+      case 'auth/invalid-email':
+        return 'Неверный формат email адреса';
+      case 'auth/weak-password':
+        return 'Пароль слишком слабый. Используйте не менее 6 символов';
+      case 'auth/operation-not-allowed':
+        return 'Регистрация с email/password временно отключена';
+      case 'auth/network-request-failed':
+        return 'Ошибка сети. Проверьте подключение к интернету';
+      default:
+        return 'Произошла неизвестная ошибка. Попробуйте еще раз';
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
       setError('Пароли не совпадают');
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError('Пароль должен содержать не менее 6 символов');
       return;
     }
 
@@ -35,7 +58,11 @@ export const RegisterForm: React.FC = () => {
       });
       navigate('/');
     } catch (err: any) {
-      setError(err.message || 'Ошибка при регистрации');
+      if (err instanceof FirebaseError) {
+        setError(getErrorMessage(err));
+      } else {
+        setError('Ошибка при регистрации');
+      }
     } finally {
       setLoading(false);
     }
