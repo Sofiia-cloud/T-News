@@ -35,3 +35,10 @@ export interface AuthCredentials {
   password: string;
   displayName?: string;
 }
+
+export interface Like {
+  id: string;
+  userId: string;
+  postId: string;
+  createdAt: Date;
+}
