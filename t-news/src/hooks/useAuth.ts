@@ -5,22 +5,35 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
+  UserCredential,
 } from 'firebase/auth';
-import { auth } from '../services/firebase';
-import { User, AuthCredentials } from '../types';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../services/firebase';
+import { User } from '../types';
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
+        let userData: Partial<User> = {};
+
+        try {
+          const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
+          if (userDoc.exists()) {
+            userData = userDoc.data();
+          }
+        } catch (error) {
+          console.error('Ошибка при загрузке данных пользователя:', error);
+        }
         setUser({
           uid: firebaseUser.uid,
           email: firebaseUser.email,
-          displayName: firebaseUser.displayName || undefined,
-          photoURL: firebaseUser.photoURL || undefined,
+          displayName: firebaseUser.displayName || userData.displayName,
+          photoURL: firebaseUser.photoURL || userData.photoURL,
+          bio: userData.bio,
         });
       } else {
         setUser(null);
@@ -28,27 +41,39 @@ export function useAuth() {
       setLoading(false);
     });
 
-    return unsubscribe;
+    return () => unsubscribe();
   }, []);
 
-  const login = async (email: string, password: string) => {
-    const result = await signInWithEmailAndPassword(auth, email, password);
-    return result.user;
+  const login = async (
+    email: string,
+    password: string
+  ): Promise<UserCredential> => {
+    return await signInWithEmailAndPassword(auth, email, password);
   };
 
-  const register = async ({
-    email,
-    password,
-    displayName,
-  }: AuthCredentials) => {
-    const result = await createUserWithEmailAndPassword(auth, email, password);
-    if (displayName) {
-      await updateProfile(result.user, { displayName });
+  const register = async (credentials: {
+    email: string;
+    password: string;
+    displayName?: string;
+  }): Promise<UserCredential> => {
+    const { email, password, displayName } = credentials;
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    if (displayName && auth.currentUser) {
+      await updateProfile(auth.currentUser, { displayName });
+
+      await setDoc(doc(db, 'users', userCredential.user.uid), {
+        displayName,
+        bio: '',
+      });
     }
-    return result.user;
+    return userCredential;
   };
 
-  const logout = () => {
+  const logout = (): Promise<void> => {
     return signOut(auth);
   };
 
